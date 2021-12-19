@@ -9,48 +9,22 @@
 
 name="mc"
 rcvar="${name}_enable"
-stop_cmd="${name}_stop"
 start_cmd="${name}_start"
-
-mc_start()
-{
-	screen -dms mc sh /srv/mc/start
-	return 0
-}
+stop_cmd="${name}_stop"
 
 mc_stop()
 {
-	screen -S mc -p 0 -X stop
-	return 0
+	/usr/local/bin/screen -S mc -p 0 -X stuff "stop^M"
+	while pgrep -f server.jar > /dev/null; do sleep 1; done
+	/usr/local/bin/screen -S mc -p 0 -X stuff "exit^M"
 }
-
-load_rc_config $name
-run_rc_command "$@"
-#!/bin/sh
-
-# PROVIDE: mc
-# REQUIRE: FILESYSTEMS
-# BEFORE: LOGIN
-# KEYWORD: shutdown
-
-. /etc/rc.subr
-
-name="mc"
-rcvar="${name}_enable"
-stop_cmd="${name}_stop"
-start_cmd="${name}_start"
 
 mc_start()
 {
-	screen -dms mc sh /srv/mc/start
-	return 0
-}
-
-mc_stop()
-{
-	screen -S mc -p 0 -X stop
-	return 0
+        /usr/local/bin/screen -dmS mc
+        /usr/local/bin/screen -S mc -p 0 -X stuff "cd /srv/mc/^M"
+        /usr/local/bin/screen -S mc -p 0 -X stuff "./start^M"
 }
 
 load_rc_config $name
-run_rc_command "$@"
+run_rc_command "$1"
