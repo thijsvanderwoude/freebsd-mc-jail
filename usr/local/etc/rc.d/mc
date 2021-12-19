@@ -1,0 +1,56 @@
+#!/bin/sh
+
+# PROVIDE: mc
+# REQUIRE: FILESYSTEMS
+# BEFORE: LOGIN
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name="mc"
+rcvar="${name}_enable"
+stop_cmd="${name}_stop"
+start_cmd="${name}_start"
+
+mc_start()
+{
+	screen -dms mc sh /srv/mc/start
+	return 0
+}
+
+mc_stop()
+{
+	screen -S mc -p 0 -X stop
+	return 0
+}
+
+load_rc_config $name
+run_rc_command "$@"
+#!/bin/sh
+
+# PROVIDE: mc
+# REQUIRE: FILESYSTEMS
+# BEFORE: LOGIN
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name="mc"
+rcvar="${name}_enable"
+stop_cmd="${name}_stop"
+start_cmd="${name}_start"
+
+mc_start()
+{
+	screen -dms mc sh /srv/mc/start
+	return 0
+}
+
+mc_stop()
+{
+	screen -S mc -p 0 -X stop
+	return 0
+}
+
+load_rc_config $name
+run_rc_command "$@"
